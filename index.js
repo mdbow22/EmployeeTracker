@@ -21,24 +21,15 @@ function selectTask() {
             switch (answers.whatToDo) {
                 case 'View all employees':
                     viewTable('employees')
-                        .then((results) => {
-                            console.table(results[0]);
-                            selectTask();
-                        });
+                        .then((results) => logResults(results[0]));
                     break;
                 case 'View all roles':
                     viewTable('roles')
-                        .then((results) => {
-                        console.table(results[0]);
-                        selectTask();
-                    });
+                        .then((results) => logResults(results[0]));
                     break;
                 case 'View all departments':
                     viewTable('departments')
-                        .then((results) => {
-                        console.table(results[0]);
-                        selectTask();
-                    });
+                        .then((results) => logResults(results[0]));
                     break;
                 case 'Add a department':
                     //addDepartment()
@@ -55,6 +46,11 @@ function selectTask() {
             }
         })
         .catch((err) => console.error(err));
+}
+
+function logResults(results) {
+    console.table(results);
+    selectTask();
 }
 
 selectTask();
