@@ -11,11 +11,21 @@ const db = mysql.createConnection(
     console.log(`Connected to company_db database.`)
   );
 
+  //Select all data from a given table
   async function viewTable(table) {
-    console.log('it worked!');
       const data = await db.promise().query(`SELECT * FROM ${table}`);
       
       return data;
   }
 
-  module.exports = {viewTable};
+  async function insertDepartment(department) {
+    const data = await db.promise().query(`INSERT INTO departments (name) VALUES (?)`, department);
+
+    return data;
+  }
+
+  async function insertRole(title, salary, department) {
+
+  }
+
+  module.exports = {viewTable, insertDepartment, insertRole};
