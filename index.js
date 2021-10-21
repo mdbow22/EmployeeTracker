@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const {viewTable, insertDepartment, insertRole} = require('./queries');
+const {viewTable, insertDepartment, insertRole, insertEmployee} = require('./queries');
 
 function selectTask() {
     const question = [
@@ -167,7 +167,17 @@ async function addEmployee() {
 
         const answers = await inquirer.prompt(employeeQs);
 
-        const newRole = await insertEmployee();
+        let newRole;
+
+        //insert employee into db, but only pass manager ID if user picked option other than 'None'
+        if (answers.manager === 'None') {
+            newRole = await insertEmployee(answers.firstName, answers.lastName, roleIds[allRoles.indexOf(answers.role)]);
+        } else {
+            newRole = await insertEmployee(answers.firstName, answers.lastName, roleIds[allRoles.indexOf(answers.role)], employeeIds[allEmployees.indexOf(answers.manager)]);
+        }
+        
+        console.log(`${answers.firstName} ${answers.lastName} has been added to the database`);
+        selectTask();
         
     } catch (err) {
         console.error(err);
@@ -177,27 +187,6 @@ async function addEmployee() {
 
 function updateEmployee() {
 
-}
-
-function getIds(table) {
-    viewTable(table)
-        .then((results) => {
-
-            let resultsArray = [];
-            let returnArray = [];
-            //convert items into an array
-            resultsArray = results[0];
-            allItems = resultsArray.map(e => e.name);
-
-            //save id of each item into another array
-            itemIds = resultsArray.map(e => e.id);
-
-            //create an array of arrays so items and their ids are linked by indices
-            returnArray.push(allItems);
-            returnArray.push(itemIds);
-
-            return returnArray;
-        });
 }
 
 selectTask();

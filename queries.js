@@ -30,4 +30,18 @@ const db = mysql.createConnection(
     return data;
   }
 
-  module.exports = {viewTable, insertDepartment, insertRole};
+  async function insertEmployee(firstName, lastName, roleId, managerId) {
+    
+    let data;
+
+    //only insert a value for manager column if one was passed into the function
+    if(managerId) {
+      data = await db.promise().query(`INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES(?,?,?,?)`, [firstName, lastName, roleId, managerId]);
+    } else {
+      data = await db.promise().query(`INSERT INTO employees (first_name, last_name, role_id) VALUES(?,?,?)`, [firstName, lastName, roleId]);
+    }
+    
+    return data;
+  }
+
+  module.exports = {viewTable, insertDepartment, insertRole, insertEmployee};
