@@ -38,10 +38,10 @@ function selectTask() {
                     addRole();
                     break;
                 case 'Add an employee':
-                    //addToDB('employee');
+                    addEmployee();
                     break;
                 case 'Update an employee\'s role':
-                    //updateEmployee
+                    updateEmployee();
                     break;
             }
         })
@@ -113,6 +113,59 @@ function addRole() {
         });
 }
 
-    
+async function addEmployee() {
+    try {
+        //Pull back all employees and roles to be able to use ids in SQL query
+        const roleData = await viewTable('roles');
+        const employeeData = await viewTable('employees');
+
+        const roles = roleData[0];
+        const employees = employeeData[0];
+
+        //Create an array of roles and their ids to link them together
+        const allRoles = roles.map(e => e.title);
+        const roleIds = roles.map(e => e.id);
+        const rolesArray = [allRoles, roleIds];
+
+        //Create an array of employees and ids to link them together
+        const allEmployees = employees.map((e) => {
+            return `${e.first_name} ${e.last_name}`;
+        });
+        const employeeIds = employees.map(e => e.id);
+        const employeesArray = [allEmployees, employeeIds];
+
+        console.log(rolesArray);
+        console.log(employeesArray);
+        
+    } catch (err) {
+        console.error(err);
+    }
+
+}
+
+function updateEmployee() {
+
+}
+
+function getIds(table) {
+    viewTable(table)
+        .then((results) => {
+
+            let resultsArray = [];
+            let returnArray = [];
+            //convert items into an array
+            resultsArray = results[0];
+            allItems = resultsArray.map(e => e.name);
+
+            //save id of each item into another array
+            itemIds = resultsArray.map(e => e.id);
+
+            //create an array of arrays so items and their ids are linked by indices
+            returnArray.push(allItems);
+            returnArray.push(itemIds);
+
+            return returnArray;
+        });
+}
 
 selectTask();

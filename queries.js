@@ -25,7 +25,9 @@ const db = mysql.createConnection(
   }
 
   async function insertRole(title, salary, department) {
-
+    const data = await db.promise().query(`INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`, [title, salary, department]);
+    
+    return data;
   }
 
   module.exports = {viewTable, insertDepartment, insertRole};
