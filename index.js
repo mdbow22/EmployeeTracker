@@ -108,6 +108,7 @@ function addRole() {
                     insertRole(answers.roleName, answers.salary, deptIds[allDepts.indexOf(answers.department)])
                         .then((results) => {
                             console.log(`${answers.roleName} has been added`);
+                            selectTask();
                         })
                 })
         });
@@ -131,11 +132,42 @@ async function addEmployee() {
         const allEmployees = employees.map((e) => {
             return `${e.first_name} ${e.last_name}`;
         });
-        const employeeIds = employees.map(e => e.id);
-        const employeesArray = [allEmployees, employeeIds];
+        //Add a none option at the end
+        allEmployees.push('None');
 
-        console.log(rolesArray);
-        console.log(employeesArray);
+        const employeeIds = employees.map(e => e.id);
+
+        const employeesArray = [allEmployees, employeeIds]; 
+
+        //Generate prompts for adding a new employee
+        const employeeQs = [
+            {
+                type: 'input',
+                name: 'firstName',
+                message: 'What is the employee\'s first name?'
+            },
+            {
+                type: 'input',
+                name: 'lastName',
+                message: 'What is the employee\'s last name?'
+            },
+            {
+                type: 'list',
+                name: 'role',
+                message: 'What is the employee\'s role?',
+                choices: rolesArray[0]
+            },
+            {
+                type: 'list',
+                name: 'manager',
+                message: 'Who is the employee\'s manager?',
+                choices: employeesArray[0]
+            }
+        ];
+
+        const answers = await inquirer.prompt(employeeQs);
+
+        const newRole = await insertEmployee();
         
     } catch (err) {
         console.error(err);
