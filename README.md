@@ -29,15 +29,15 @@ This app is used entirely within the command line/terminal. To initiate the app,
 
 You will then be given a prompt to select an option:
 
-[insert screenshot]
+![screenshot of initial menu](https://github.com/mdbow22/EmployeeTracker/blob/d56cee84d8c7501b1c4edb7cbf44891dc5bb6a93/assets/menu_scrnshot.PNG)
 
 Clicking any of the view options will return the entire table (employees, roles, or departments):
 
-[insert screenshot]
+![screenshot of a table being displayed](https://github.com/mdbow22/EmployeeTracker/blob/d56cee84d8c7501b1c4edb7cbf44891dc5bb6a93/assets/viewTable_scrnshot.PNG)
 
 Clicking any of the adds will walk you through adding. The screenshots below are for adding a role:
 
-[insert screenshots]
+![screenshot of the prompts for adding a role](https://github.com/mdbow22/EmployeeTracker/blob/d56cee84d8c7501b1c4edb7cbf44891dc5bb6a93/assets/addRole_scrnshot.PNG)
 
 At the end of any selection, you will then be prompted for the next action you want to perform. Simply end Node to exit the app.
 
