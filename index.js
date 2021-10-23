@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const {viewTable, insertDepartment, insertRole, insertEmployee} = require('./queries');
+const {viewTable, insertDepartment, insertRole, insertEmployee, updateRole} = require('./queries');
 
 function selectTask() {
     const question = [
@@ -40,7 +40,7 @@ function selectTask() {
                 case 'Add an employee':
                     addEmployee();
                     break;
-                case 'Update an employee\'s role':
+                case 'Update an Employee\'s role':
                     updateEmployee();
                     break;
             }
@@ -132,7 +132,7 @@ async function addEmployee() {
         const allEmployees = employees.map((e) => {
             return `${e.first_name} ${e.last_name}`;
         });
-        //Add a none option at the end
+        //Add a none option at the end if employee has no manager
         allEmployees.push('None');
 
         const employeeIds = employees.map(e => e.id);
@@ -185,8 +185,51 @@ async function addEmployee() {
 
 }
 
-function updateEmployee() {
+async function updateEmployee() {
+    try {
+        console.log('hello?');
+        //Pull back all employees and roles to be able to use ids in SQL query
+        const roleData = await viewTable('roles');
+        const employeeData = await viewTable('employees');
 
+        const roles = roleData[0];
+        const employees = employeeData[0];
+
+        //Create an array of roles and their ids to link them together
+        const allRoles = roles.map(e => e.title);
+        const roleIds = roles.map(e => e.id);
+
+        //Create an array of employees and ids to link them together
+        const allEmployees = employees.map(e => `${e.first_name} ${e.last_name}`);
+        const employeeIds = employees.map(e => e.id);
+
+        //Prompts for employee and new role
+        const updateQuestions = [
+            {
+                type: 'list',
+                name: 'employee',
+                message: 'Whose role would you like to update?',
+                choices: allEmployees
+            },
+            {
+                type: 'list',
+                name: 'newRole',
+                message: 'What is their new role?',
+                choices: allRoles
+            }
+        ]
+
+        const answers = await inquirer.prompt(updateQuestions);
+
+        const updatedRole = await updateRole(employeeIds[allEmployees.indexOf(answers.employee)], roleIds[allRoles.indexOf(answers.newRole)]);
+
+        console.log(`${answers.employee}\'s role has been updated to ${answers.newRole}`);
+
+        selectTask();
+
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 selectTask();

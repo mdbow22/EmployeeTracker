@@ -44,4 +44,10 @@ const db = mysql.createConnection(
     return data;
   }
 
-  module.exports = {viewTable, insertDepartment, insertRole, insertEmployee};
+  async function updateRole(eID, rID) {
+    data = await db.promise().query(`UPDATE employees SET role_id = ? WHERE id = ?`, [rID, eID]);
+
+    return data;
+  }
+
+  module.exports = {viewTable, insertDepartment, insertRole, insertEmployee, updateRole};
