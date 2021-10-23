@@ -47,4 +47,4 @@ Please send any questions to me through github: https://github.com/mdbow22. Issu
 
 ## Demo
 
-Here is a linke to a video walkthrough of the app in action: [insert link]
+Here is a linke to a video walkthrough of the app in action: https://drive.google.com/file/d/1qhQIz43XKFmiIZyP-r1jEzfXGCL8dMiP/view
